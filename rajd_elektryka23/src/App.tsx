@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { faker } from "@faker-js/faker";
+import { Nav, Navbar } from "react-bootstrap";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -68,20 +69,51 @@ function App() {
 
     return (
         <div className="App">
-            <header className="App-header">
-                <button onClick={() => signInWithPopup(auth, provider)}>
-                    Log in
-                </button>
-                <button onClick={() => auth.signOut()}>Log out</button>
-            </header>
-            <section className="App-body">
-                <p>body</p>
-                <ul>
-                    <li>1</li>
-                </ul>
+            <div className="container-fluid">
+                <div className="container">
+                    <h1>Welcome to My App</h1>
 
-                <button onClick={() => {}}>add</button>
-            </section>
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Task Name</th>
+                                <th>Points</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Task 1</td>
+                                <td>10</td>
+                            </tr>
+                            <tr>
+                                <td>Task 2</td>
+                                <td>20</td>
+                            </tr>
+                            <tr>
+                                <td>Task 3</td>
+                                <td>30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <Navbar bg="dark" variant="dark" fixed="bottom">
+                    <Nav className="justify-content-between container-fluid d-flex">
+                        <Nav.Link
+                            href="/"
+                            className="d-flex justify-content-center w-50"
+                        >
+                            <i className="bi bi-house-fill"> Zadania</i>
+                        </Nav.Link>
+                        <Nav.Link
+                            href="/admin"
+                            className="d-flex justify-content-center w-50"
+                        >
+                            <i className="bi bi-trophy-fill"> Ranking</i>
+                        </Nav.Link>
+                    </Nav>
+                </Navbar>
+            </div>
         </div>
     );
 }
