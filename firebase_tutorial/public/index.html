@@ -6,9 +6,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Document</title>
 
-        <script src="app.ts"></script>
+        <script src="app.js" type="module" defer></script>
     </head>
     <body>
-        Dupa
+        <section id="whenSignedOut">
+            <h1>Sign in</h1>
+            <button id="signInButton">Sign in with Google</button>
+        </section>
+
+        <section id="whenSignedIn">
+            <h1>Signed in</h1>
+            <div id="userDetails"></div>
+            <button id="signOutButton">Sign out</button>
+        </section>
     </body>
 </html>
