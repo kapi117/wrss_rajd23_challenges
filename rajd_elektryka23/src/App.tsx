@@ -14,30 +14,14 @@ import {
 } from "firebase/firestore";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { faker } from "@faker-js/faker";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Table } from "react-bootstrap";
+import firebaseConfig from "./config/firebaseConfig";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: "AIzaSyBHcXoZeoSAobUDqoeWbIA-HHyPPU7G77s",
-    authDomain: "wrss-weaiiib-rajd23.firebaseapp.com",
-    projectId: "wrss-weaiiib-rajd23",
-    storageBucket: "wrss-weaiiib-rajd23.appspot.com",
-    messagingSenderId: "952667535656",
-    appId: "1:952667535656:web:ef27f71fc470dc849eb81d",
-    measurementId: "G-C09CCTPP9E",
-    // rewrite above in typescript
-    // apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    // authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-    // projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-    // storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-    // messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-    // appId: process.env.REACT_APP_FIREBASE_APP_ID,
-    // measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
-};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -49,6 +33,12 @@ const db = getFirestore(app);
 console.log(app);
 
 function App() {
+    const challenges = [
+        { name: "Challenge 1", points: 100 },
+        { name: "Challenge 2", points: 200 },
+        { name: "Challenge 3", points: 300 },
+    ];
+
     let teamsRef: CollectionReference<DocumentData> = collection(db, "teams");
     let metaRef: CollectionReference<DocumentData> = collection(db, "metadata");
     let unsubscribe = onSnapshot(teamsRef, (querySnapshot) => {
@@ -70,33 +60,38 @@ function App() {
     return (
         <div className="App">
             <div className="container-fluid">
-                <div className="container">
-                    <h1>Welcome to My App</h1>
+                <div className="row justify-content-center align-items-center">
+                    <div className="col-md-8 text-center">
+                        <h1 className="font-xmas text-dark my-3">
+                            Ho Ho Ho! 🎅 <br /> Gotowi na bojowe zadania?
+                        </h1>
+                    </div>
+                </div>
 
-                    <table className="table">
+                <div className="container">
+                    <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>Task Name</th>
-                                <th>Points</th>
+                                <th>Challenge</th>
+                                <th>Punkty</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Task 1</td>
-                                <td>10</td>
-                            </tr>
-                            <tr>
-                                <td>Task 2</td>
-                                <td>20</td>
-                            </tr>
-                            <tr>
-                                <td>Task 3</td>
-                                <td>30</td>
-                            </tr>
+                            {challenges.map((challenge, index) => (
+                                <tr
+                                    className={
+                                        index % 2 === 0
+                                            ? "table-light"
+                                            : "table-secondary"
+                                    }
+                                >
+                                    <td>{challenge.name}</td>
+                                    <td>{challenge.points}</td>
+                                </tr>
+                            ))}
                         </tbody>
-                    </table>
+                    </Table>
                 </div>
-
                 <Navbar bg="dark" variant="dark" fixed="bottom">
                     <Nav className="justify-content-between container-fluid d-flex">
                         <Nav.Link
