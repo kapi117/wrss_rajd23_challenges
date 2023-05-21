@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./App.css";
-import { initializeApp } from "firebase/app";
+import { FirebaseApp, initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {
     getFirestore,
@@ -11,11 +11,17 @@ import {
     onSnapshot,
     doc,
     setDoc,
+    Firestore,
+    getDocs,
 } from "firebase/firestore";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { faker } from "@faker-js/faker";
 import { Nav, Navbar, Table } from "react-bootstrap";
 import firebaseConfig from "./config/firebaseConfig";
+import ListOfChallenges from "./components/ListOfChallenges";
+import Ranking from "./components/Ranking";
+import { get } from "http";
+import { Challenge } from "./config/types";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -33,29 +39,55 @@ const db = getFirestore(app);
 console.log(app);
 
 function App() {
-    const challenges = [
-        { name: "Challenge 1", points: 100 },
-        { name: "Challenge 2", points: 200 },
-        { name: "Challenge 3", points: 300 },
-    ];
-
+    const app: FirebaseApp = initializeApp(firebaseConfig);
+    const db: Firestore = getFirestore(app);
     let teamsRef: CollectionReference<DocumentData> = collection(db, "teams");
     let metaRef: CollectionReference<DocumentData> = collection(db, "metadata");
     let unsubscribe = onSnapshot(teamsRef, (querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            console.log(`${doc.id} => ${doc.data().name}`);
+            //console.log(`${doc.id} => ${doc.data().name}`);
         });
     });
 
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            const mail: string = user.email!;
-            // that's how you get user's email
-            console.log(mail);
-        } else {
-            console.log("no user");
-        }
-    });
+    const [isRanking, setIsRanking] = useState(false);
+
+    const [challenges, setChallenges] = useState<Challenge[]>([]);
+
+    const getChallengesFromFirestore = useCallback(async () => {
+        setChallenges([]);
+
+        const challengesRef = collection(db, "challenges");
+
+        const querySnapshot = await getDocs(challengesRef);
+
+        let temp_challenges: Challenge[] = [];
+
+        let count: number = 0;
+
+        querySnapshot.forEach((doc) => {
+            count++;
+            // console.log(`${doc.id} => ${doc.data().description}`);
+            temp_challenges = [
+                ...temp_challenges,
+                {
+                    description: doc.data().description,
+                    points: doc.data().points,
+                },
+            ];
+        });
+
+        console.log(count);
+
+        setChallenges(temp_challenges);
+    }, []);
+
+    useEffect(() => {
+        getChallengesFromFirestore();
+    }, []);
+
+    const getTeamsFromFirestore = useCallback(async () => {
+        let done: boolean = false;
+    }, []);
 
     return (
         <div className="App">
@@ -67,41 +99,23 @@ function App() {
                         </h1>
                     </div>
                 </div>
-
-                <div className="container">
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Challenge</th>
-                                <th>Punkty</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {challenges.map((challenge, index) => (
-                                <tr
-                                    className={
-                                        index % 2 === 0
-                                            ? "table-light"
-                                            : "table-secondary"
-                                    }
-                                >
-                                    <td>{challenge.name}</td>
-                                    <td>{challenge.points}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </div>
+                {isRanking ? (
+                    <Ranking></Ranking>
+                ) : (
+                    <ListOfChallenges
+                        challenges={challenges}
+                    ></ListOfChallenges>
+                )}
                 <Navbar bg="dark" variant="dark" fixed="bottom">
                     <Nav className="justify-content-between container-fluid d-flex">
                         <Nav.Link
-                            href="/"
+                            onClick={() => setIsRanking(false)}
                             className="d-flex justify-content-center w-50"
                         >
                             <i className="bi bi-house-fill"> Zadania</i>
                         </Nav.Link>
                         <Nav.Link
-                            href="/admin"
+                            onClick={() => setIsRanking(true)}
                             className="d-flex justify-content-center w-50"
                         >
                             <i className="bi bi-trophy-fill"> Ranking</i>
