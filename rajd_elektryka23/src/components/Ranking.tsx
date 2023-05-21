@@ -1,5 +1,4 @@
 import React from "react";
-import Leaderboard from "./Leaderboard";
 import { Team } from "../config/types";
 
 interface RankingProps {

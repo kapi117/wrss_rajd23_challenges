@@ -87,35 +87,23 @@ function App() {
         getChallengesFromFirestore();
     }, []);
 
-    const getTeamsFromFirestore = useCallback(async () => {
-        const teamsRef = collection(db, "teams");
-
-        const querySnapshot = await getDocs(teamsRef);
-
-        let temp_teams: Team[] = [];
-
+    const unsubscribeTeams = onSnapshot(teamsRef, (querySnapshot) => {
+        const temp_teams: Team[] = [];
         querySnapshot.forEach((doc) => {
-            temp_teams = [
-                ...temp_teams,
-                {
-                    name: doc.data().name,
-                    points: doc.data().points,
-                    completedChallengesIds: doc.data().completedChallengesIds,
-                    completedChallengesPoints:
-                        doc.data().completedChallengesPoints,
-                    extraPoints: doc.data().extraPoints,
-                    members: doc.data().members,
-                    extraDescriptions: doc.data().extraDescriptions,
-                },
-            ];
+            //console.log(`${doc.id} => ${doc.data().name}`);
+            temp_teams.push({
+                name: doc.data().name,
+                points: doc.data().points,
+                completedChallengesIds: doc.data().completedChallengesIds,
+                completedChallengesPoints: doc.data().completedChallengesPoints,
+                extraPoints: doc.data().extraPoints,
+                members: doc.data().members,
+                extraDescriptions: doc.data().extraDescriptions,
+            });
         });
 
         setTeams(temp_teams);
-    }, []);
-
-    useEffect(() => {
-        getTeamsFromFirestore();
-    }, []);
+    });
 
     return (
         <div className="App">
