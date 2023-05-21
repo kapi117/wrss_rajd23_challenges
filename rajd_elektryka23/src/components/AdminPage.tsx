@@ -76,19 +76,19 @@ const AdminPage: React.FC<AdminPageProps> = (props) => {
             </Container>
         </div>
     ) : (
-        <div className="bg-dark d-flex align-items-center justify-content-center vh-100">
-            <Container className="bg-light p-5 rounded">
-                <h1 className="text-center mb-4">
-                    Zalogowano pomyślnie! {user.email}
-                </h1>
-                <Button
-                    variant="outline-dark"
-                    className="w-100"
-                    onClick={() => auth.signOut()}
-                >
-                    Wyloguj
-                </Button>
-            </Container>
+        <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="d-flex text-center w-75 flex-column">
+                <div className="p-2 w-100">
+                    <Button variant="primary" className="my-2">
+                        Dodaj zespół
+                    </Button>
+                </div>
+                <div className="p-2 w-100">
+                    <Button variant="secondary" className="my-2">
+                        Zalicz zadanie
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 };
