@@ -21,7 +21,7 @@ import firebaseConfig from "./config/firebaseConfig";
 import ListOfChallenges from "./components/ListOfChallenges";
 import Ranking from "./components/Ranking";
 import { get } from "http";
-import { Challenge } from "./config/types";
+import { Challenge, Team } from "./config/types";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -53,6 +53,8 @@ function App() {
 
     const [challenges, setChallenges] = useState<Challenge[]>([]);
 
+    const [teams, setTeams] = useState<Team[]>([]);
+
     const getChallengesFromFirestore = useCallback(async () => {
         setChallenges([]);
 
@@ -66,12 +68,12 @@ function App() {
 
         querySnapshot.forEach((doc) => {
             count++;
-            // console.log(`${doc.id} => ${doc.data().description}`);
             temp_challenges = [
                 ...temp_challenges,
                 {
                     description: doc.data().description,
                     points: doc.data().points,
+                    id: doc.id,
                 },
             ];
         });
@@ -86,7 +88,33 @@ function App() {
     }, []);
 
     const getTeamsFromFirestore = useCallback(async () => {
-        let done: boolean = false;
+        const teamsRef = collection(db, "teams");
+
+        const querySnapshot = await getDocs(teamsRef);
+
+        let temp_teams: Team[] = [];
+
+        querySnapshot.forEach((doc) => {
+            temp_teams = [
+                ...temp_teams,
+                {
+                    name: doc.data().name,
+                    points: doc.data().points,
+                    completedChallengesIds: doc.data().completedChallengesIds,
+                    completedChallengesPoints:
+                        doc.data().completedChallengesPoints,
+                    extraPoints: doc.data().extraPoints,
+                    members: doc.data().members,
+                    extraDescriptions: doc.data().extraDescriptions,
+                },
+            ];
+        });
+
+        setTeams(temp_teams);
+    }, []);
+
+    useEffect(() => {
+        getTeamsFromFirestore();
     }, []);
 
     return (
@@ -100,7 +128,7 @@ function App() {
                     </div>
                 </div>
                 {isRanking ? (
-                    <Ranking></Ranking>
+                    <Ranking teams={teams}></Ranking>
                 ) : (
                     <ListOfChallenges
                         challenges={challenges}

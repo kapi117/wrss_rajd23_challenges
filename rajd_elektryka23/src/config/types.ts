@@ -1,6 +1,7 @@
 type Challenge = {
     description: string;
     points: number;
+    id: string;
 };
 
 type Team = {
@@ -8,6 +9,9 @@ type Team = {
     points: number;
     members: string[];
     completedChallengesIds: string[];
+    completedChallengesPoints: number[];
+    extraDescriptions: string[];
+    extraPoints: number[];
 };
 
-export type { Challenge };
+export type { Challenge, Team };
