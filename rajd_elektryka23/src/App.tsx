@@ -136,7 +136,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="/admin/ranking"
+                            path="/admin/teams"
                             element={<Ranking teams={teams} />}
                         />
                     </Route>

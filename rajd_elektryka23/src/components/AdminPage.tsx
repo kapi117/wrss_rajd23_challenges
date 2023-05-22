@@ -16,6 +16,7 @@ import {
 import ListOfChallenges from "./ListOfChallenges";
 import { Challenge, Team } from "../config/types";
 import { Outlet, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 interface AdminPageProps {
     challenges: Challenge[];
@@ -53,17 +54,6 @@ const AdminPage: React.FC<AdminPageProps> = ({
         }
     });
 
-    let MainView: React.FC = () => <div>supa</div>;
-    if (isTeam) {
-        MainView = () => <p>dupa</p>;
-    } else {
-        MainView = () => <ListOfChallenges challenges={challenges} />;
-    }
-
-    const handleNavItemClick = (isTeamSelected: boolean) => {
-        setIsTeam(isTeamSelected);
-    };
-
     return !loggedIn ? (
         <div className="bg-dark d-flex align-items-center justify-content-center vh-100">
             <Container className="bg-light p-5 rounded">
@@ -84,20 +74,20 @@ const AdminPage: React.FC<AdminPageProps> = ({
             <div className="container-fluid">
                 <Outlet />
 
-                <Navbar bg="dark" variant="dark" fixed="bottom">
-                    <Nav className="justify-content-between container-fluid d-flex">
-                        <Nav.Link
-                            href="/admin/challenges"
-                            className={`d-flex justify-content-center w-50`}
+                <Navbar bg="dark" variant="dark" fixed="bottom" className="p-0">
+                    <Nav className="justify-content-between container-fluid d-flex m-0 p-0">
+                        <NavLink
+                            to="challenges"
+                            className={`d-flex justify-content-center w-50 py-3 nav-link-item`}
                         >
                             <i className="bi bi-list-task"> Zadania</i>
-                        </Nav.Link>
-                        <Nav.Link
-                            href="/admin/teams"
-                            className={`d-flex justify-content-center w-50`}
+                        </NavLink>
+                        <NavLink
+                            to="teams"
+                            className={`d-flex justify-content-center w-50 py-3 nav-link-item`}
                         >
                             <i className="bi bi-people-fill"> Zespoły</i>
-                        </Nav.Link>
+                        </NavLink>
                     </Nav>
                 </Navbar>
             </div>
