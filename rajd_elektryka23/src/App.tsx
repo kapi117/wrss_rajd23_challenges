@@ -26,6 +26,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import AdminPage from "./components/AdminPage";
 import AddTeamPage from "./components/AddTeamPage";
+import MarkTaskCompleted from "./components/MarkTaskCompleted";
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
@@ -33,7 +34,9 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
-console.log(app);
+export function updateTeamInFirestore(team: Team) {
+    setDoc(doc(db, "teams", team.name), team);
+}
 
 function App() {
     const app: FirebaseApp = initializeApp(firebaseConfig);
@@ -49,6 +52,17 @@ function App() {
     const [challenges, setChallenges] = useState<Challenge[]>([]);
     const [teams, setTeams] = useState<Team[]>([]);
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
+
+    const [newTeam, setNewTeam] = useState<Team>({
+        name: "",
+        points: 0,
+        completedChallengesIds: [],
+        completedChallengesPoints: [],
+        extraPoints: [],
+        members: [],
+        extraDescriptions: [],
+    });
+    const [addNewTeam, setAddNewTeam] = useState<boolean>(false);
 
     const getChallengesFromFirestore = useCallback(async () => {
         setChallenges([]);
@@ -143,6 +157,15 @@ function App() {
                         <Route
                             path="/admin/add_team"
                             element={<AddTeamPage teams={teams} />}
+                        />
+                        <Route
+                            path="/admin/complete_challenge"
+                            element={
+                                <MarkTaskCompleted
+                                    teams={teams}
+                                    challenges={challenges}
+                                />
+                            }
                         />
                     </Route>
                 </Routes>

@@ -11,7 +11,7 @@ const AdminNavbar = () => {
     const fab_link =
         location.pathname === "/admin/teams"
             ? "/admin/add_team"
-            : "/admin/add_challenge";
+            : "/admin/complete_challenge";
 
     return (
         <>

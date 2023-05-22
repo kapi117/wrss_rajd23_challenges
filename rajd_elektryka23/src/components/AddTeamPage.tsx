@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Challenge, Team } from "../config/types";
+import { useNavigate } from "react-router-dom";
+import { updateTeamInFirestore } from "../App";
 
 interface AddTeamPageProps {
     teams: Team[];
@@ -9,6 +11,7 @@ interface AddTeamPageProps {
 const AddTeamPage: React.FC<AddTeamPageProps> = ({ teams }) => {
     const [teamName, setTeamName] = useState("");
     const [members, setMembers] = useState([""]);
+    const navigate = useNavigate();
 
     const handleChangeMember = (index: number, value: string) => {
         const updatedMembers = [...members];
@@ -40,8 +43,21 @@ const AddTeamPage: React.FC<AddTeamPageProps> = ({ teams }) => {
             alert("Zespół o takiej nazwie już istnieje!");
             return;
         }
-        console.log("Team Name:", teamName);
-        console.log("Members:", members);
+        const newTeam: Team = {
+            name: teamName,
+            points: 0,
+            completedChallengesIds: [],
+            completedChallengesPoints: [],
+            extraPoints: [],
+            members: members,
+            extraDescriptions: [],
+        };
+
+        updateTeamInFirestore(newTeam);
+        setTeamName("");
+        setMembers([""]);
+        console.log(newTeam);
+        navigate("/admin/teams");
     };
 
     return (
@@ -89,7 +105,11 @@ const AddTeamPage: React.FC<AddTeamPageProps> = ({ teams }) => {
                         Dodaj członka
                     </Button>
 
-                    <Button variant="primary" type="submit">
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        onClick={handleSubmit}
+                    >
                         Zapisz zespół
                     </Button>
                 </Form.Group>
