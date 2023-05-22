@@ -53,7 +53,11 @@ const MarkTaskCompleted: React.FC<MarkTaskCompletedProps> = ({
         );
 
         if (!selectedTeamObj) {
-            alert("Invalid challenge or team selection");
+            alert("Taki zespół nie istnieje!");
+            return;
+        }
+        if (challengeName === "") {
+            alert("Wybierz challenge!");
             return;
         }
 
@@ -79,13 +83,14 @@ const MarkTaskCompleted: React.FC<MarkTaskCompletedProps> = ({
 
     return (
         <div className="container">
-            <h1 className="m-3">Mark Task Completed</h1>
+            <h1 className="m-3">Zgłoś wykonanie zadania</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="challengeName">
-                    <Form.Label>Challenge Name</Form.Label>
+                    <Form.Label>Nazwa challenge'u</Form.Label>
                     <Form.Control
+                        autoComplete="off"
                         list="datalistOptions"
-                        placeholder="Enter challenge name"
+                        placeholder="Wpisz lub wyszukaj challenge"
                         value={challengeName}
                         onChange={handleChallengeChange}
                     />
@@ -102,13 +107,16 @@ const MarkTaskCompleted: React.FC<MarkTaskCompletedProps> = ({
                 </Form.Group>
 
                 <Form.Group controlId="team">
-                    <Form.Label>Team</Form.Label>
+                    <Form.Label>Zespół</Form.Label>
                     <Form.Control
                         as="select"
                         value={selectedTeam}
                         onChange={handleTeamChange}
                     >
-                        <option value="">Select team</option>
+                        <option value="">
+                            Wybierz zespół (jeśli nie ma to najpierw musisz
+                            utworzyć)
+                        </option>
                         {teams.map((team) => (
                             <option key={team.name} value={team.name}>
                                 {team.name}
@@ -118,7 +126,7 @@ const MarkTaskCompleted: React.FC<MarkTaskCompletedProps> = ({
                 </Form.Group>
 
                 <Form.Group controlId="points">
-                    <Form.Label>Points</Form.Label>
+                    <Form.Label>Punkty</Form.Label>
                     <Form.Control
                         type="number"
                         placeholder="Points"
@@ -128,7 +136,7 @@ const MarkTaskCompleted: React.FC<MarkTaskCompletedProps> = ({
                 </Form.Group>
 
                 <Button variant="primary" type="submit">
-                    Mark Completed
+                    Zgłoś wykonanie zadania
                 </Button>
             </Form>
         </div>
