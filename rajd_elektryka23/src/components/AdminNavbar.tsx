@@ -32,9 +32,12 @@ const AdminNavbar = () => {
                 </Nav>
             </Navbar>
             <div className="fab-container">
-                <Link to={fab_link} className="fab-button-link">
+                <Link
+                    to={fab_link}
+                    className="fab-button-link align-items-center d-flex justify-content-center w-100 h-100"
+                >
                     <button
-                        className="btn btn-dark pmd-btn-fab pmd-ripple-effect pmd-btn-raised fab-button"
+                        className="btn btn-dark pmd-btn-fab pmd-ripple-effect pmd-btn-raised fab-button align-self-center"
                         type="button"
                     >
                         <FiPlus />
