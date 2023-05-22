@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Challenge, Team } from "../config/types";
 
-function AddTeamPage() {
-    const teams: Team[] = [];
+interface AddTeamPageProps {
+    teams: Team[];
+}
 
+const AddTeamPage: React.FC<AddTeamPageProps> = ({ teams }) => {
     const [teamName, setTeamName] = useState("");
     const [members, setMembers] = useState([""]);
 
@@ -94,6 +96,6 @@ function AddTeamPage() {
             </Form>
         </div>
     );
-}
+};
 
 export default AddTeamPage;

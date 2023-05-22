@@ -1,10 +1,18 @@
 import React from "react";
 import "./styles.css";
 import { Nav, Navbar } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const AdminNavbar = () => {
+    const location = useLocation();
+
+    const fab_link =
+        location.pathname === "/admin/teams"
+            ? "/admin/add_team"
+            : "/admin/add_challenge";
+
     return (
         <>
             <Navbar bg="dark" variant="dark" fixed="bottom" className="p-0">
@@ -24,12 +32,14 @@ const AdminNavbar = () => {
                 </Nav>
             </Navbar>
             <div className="fab-container">
-                <button
-                    className="btn btn-dark pmd-btn-fab pmd-ripple-effect pmd-btn-raised fab-button"
-                    type="button"
-                >
-                    <FiPlus />
-                </button>
+                <Link to={fab_link} className="fab-button-link">
+                    <button
+                        className="btn btn-dark pmd-btn-fab pmd-ripple-effect pmd-btn-raised fab-button"
+                        type="button"
+                    >
+                        <FiPlus />
+                    </button>
+                </Link>
             </div>
         </>
     );

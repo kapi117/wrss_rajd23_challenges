@@ -25,6 +25,7 @@ import { Challenge, Team } from "./config/types";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import AdminPage from "./components/AdminPage";
+import AddTeamPage from "./components/AddTeamPage";
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
@@ -138,6 +139,10 @@ function App() {
                         <Route
                             path="/admin/teams"
                             element={<Ranking teams={teams} />}
+                        />
+                        <Route
+                            path="/admin/add_team"
+                            element={<AddTeamPage teams={teams} />}
                         />
                     </Route>
                 </Routes>
