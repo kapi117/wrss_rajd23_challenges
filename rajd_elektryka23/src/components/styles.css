@@ -19,6 +19,7 @@
 }
 
 .nav-link-item.active {
-    color: lightcoral;
+    color: darkred;
     text-decoration: none;
+    background-color: lightgreen;
 }
