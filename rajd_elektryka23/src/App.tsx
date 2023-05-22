@@ -22,14 +22,10 @@ import ListOfChallenges from "./components/ListOfChallenges";
 import Ranking from "./components/Ranking";
 import { get } from "http";
 import { Challenge, Team } from "./config/types";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
+import AdminPage from "./components/AdminPage";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
@@ -49,11 +45,9 @@ function App() {
         });
     });
 
-    const [isRanking, setIsRanking] = useState(false);
-
     const [challenges, setChallenges] = useState<Challenge[]>([]);
-
     const [teams, setTeams] = useState<Team[]>([]);
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
     const getChallengesFromFirestore = useCallback(async () => {
         setChallenges([]);
@@ -107,38 +101,47 @@ function App() {
 
     return (
         <div className="App">
-            <div className="container-fluid">
-                <div className="row justify-content-center align-items-center">
-                    <div className="col-md-8 text-center">
-                        <h1 className="font-xmas text-dark my-3">
-                            Ho Ho Ho! 🎅 <br /> Gotowi na bojowe zadania?
-                        </h1>
-                    </div>
-                </div>
-                {isRanking ? (
-                    <Ranking teams={teams}></Ranking>
-                ) : (
-                    <ListOfChallenges
-                        challenges={challenges}
-                    ></ListOfChallenges>
-                )}
-                <Navbar bg="dark" variant="dark" fixed="bottom">
-                    <Nav className="justify-content-between container-fluid d-flex">
-                        <Nav.Link
-                            onClick={() => setIsRanking(false)}
-                            className="d-flex justify-content-center w-50"
-                        >
-                            <i className="bi bi-house-fill"> Zadania</i>
-                        </Nav.Link>
-                        <Nav.Link
-                            onClick={() => setIsRanking(true)}
-                            className="d-flex justify-content-center w-50"
-                        >
-                            <i className="bi bi-trophy-fill"> Ranking</i>
-                        </Nav.Link>
-                    </Nav>
-                </Navbar>
-            </div>
+            <BrowserRouter>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Home challenges={challenges} teams={teams} />}
+                    >
+                        <Route
+                            path="/challenges"
+                            element={
+                                <ListOfChallenges challenges={challenges} />
+                            }
+                        />
+                        <Route
+                            path="/ranking"
+                            element={<Ranking teams={teams} />}
+                        />
+                    </Route>
+                    <Route
+                        path="/admin"
+                        element={
+                            <AdminPage
+                                challenges={challenges}
+                                teams={teams}
+                                loggedIn={loggedIn}
+                                setLoggedIn={setLoggedIn}
+                            />
+                        }
+                    >
+                        <Route
+                            path="/admin/challenges"
+                            element={
+                                <ListOfChallenges challenges={challenges} />
+                            }
+                        />
+                        <Route
+                            path="/admin/ranking"
+                            element={<Ranking teams={teams} />}
+                        />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
         </div>
     );
 }

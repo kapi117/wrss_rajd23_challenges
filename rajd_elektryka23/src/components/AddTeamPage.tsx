@@ -1,48 +1,96 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { Challenge, Team } from "../config/types";
 
 function AddTeamPage() {
-    const [teamName, setTeamName] = useState<string>("");
-    const [members, setMembers] = useState<string[]>([]);
+    const teams: Team[] = [];
+
+    const [teamName, setTeamName] = useState("");
+    const [members, setMembers] = useState([""]);
+
+    const handleChangeMember = (index: number, value: string) => {
+        const updatedMembers = [...members];
+        updatedMembers[index] = value;
+        setMembers(updatedMembers);
+    };
+
+    const handleAddMember = () => {
+        setMembers([...members, ""]);
+    };
+
+    const handleRemoveMember = (index: number) => {
+        const updatedMembers = [...members];
+        updatedMembers.splice(index, 1);
+        setMembers(updatedMembers);
+    };
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        // Logic to handle form submission, such as sending data to backend or performing validations
-        // You can access the teamName and members state variables here
+        if (
+            teamName === "" ||
+            members.length === 0 ||
+            members.indexOf("") !== -1
+        ) {
+            alert("Nazwa zespołu oraz członkowie nie mogą być puste!");
+            return;
+        }
+        if (teams.find((team) => team.name === teamName) !== undefined) {
+            alert("Zespół o takiej nazwie już istnieje!");
+            return;
+        }
         console.log("Team Name:", teamName);
         console.log("Members:", members);
     };
 
     return (
         <div className="container">
-            <h1>Add Team</h1>
+            <h1 className="m-3">Dodaj zespół</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="teamName">
-                    <Form.Label>Team Name</Form.Label>
+                    <Form.Label>Nazwa zespołu</Form.Label>
                     <Form.Control
+                        className="mx-2"
                         type="text"
-                        placeholder="Enter team name"
+                        placeholder="Podaj nazwę zespołu"
                         value={teamName}
                         onChange={(e) => setTeamName(e.target.value)}
                     />
                 </Form.Group>
 
-                <Form.Group controlId="members">
-                    <Form.Label>Members</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        rows={3}
-                        placeholder="Enter team members (separated by commas)"
-                        value={members}
-                        onChange={(e) =>
-                            setMembers([...members, e.target.value])
-                        }
-                    />
-                </Form.Group>
+                <Form.Group className="d-flex flex-column" controlId="members">
+                    <Form.Label className="mt-3">Członkowie zespołu</Form.Label>
+                    {members.map((member, index) => (
+                        <div key={index} className="d-flex">
+                            <Form.Control
+                                className="m-2"
+                                type="text"
+                                placeholder={`Dodaj członka nr ${index + 1}`}
+                                value={member}
+                                onChange={(e) =>
+                                    handleChangeMember(index, e.target.value)
+                                }
+                            />
+                            <Button
+                                variant="danger"
+                                className="my-2"
+                                onClick={() => handleRemoveMember(index)}
+                            >
+                                Usuń
+                            </Button>
+                        </div>
+                    ))}
+                    <Button
+                        variant="success"
+                        className="my-3"
+                        onClick={handleAddMember}
+                    >
+                        Dodaj członka
+                    </Button>
 
-                <Button variant="primary" type="submit">
-                    Add Team
-                </Button>
+                    <Button variant="primary" type="submit">
+                        Zapisz zespół
+                    </Button>
+                </Form.Group>
             </Form>
         </div>
     );

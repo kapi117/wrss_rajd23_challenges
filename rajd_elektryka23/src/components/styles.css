@@ -12,3 +12,13 @@
         max-width: 90%;
     }
 }
+
+.nav-link-item {
+    color: lightgray;
+    text-decoration: none;
+}
+
+.nav-link-item.active {
+    color: lightcoral;
+    text-decoration: none;
+}
