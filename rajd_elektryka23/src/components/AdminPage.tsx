@@ -17,6 +17,7 @@ import ListOfChallenges from "./ListOfChallenges";
 import { Challenge, Team } from "../config/types";
 import { Outlet, useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import AdminNavbar from "./AdminNavbar";
 
 interface AdminPageProps {
     challenges: Challenge[];
@@ -71,25 +72,10 @@ const AdminPage: React.FC<AdminPageProps> = ({
         </div>
     ) : (
         <>
-            <div className="container-fluid">
+            <div className="container-fluid pt-3">
                 <Outlet />
 
-                <Navbar bg="dark" variant="dark" fixed="bottom" className="p-0">
-                    <Nav className="justify-content-between container-fluid d-flex m-0 p-0">
-                        <NavLink
-                            to="challenges"
-                            className={`d-flex justify-content-center w-50 py-3 nav-link-item`}
-                        >
-                            <i className="bi bi-list-task"> Zadania</i>
-                        </NavLink>
-                        <NavLink
-                            to="teams"
-                            className={`d-flex justify-content-center w-50 py-3 nav-link-item`}
-                        >
-                            <i className="bi bi-people-fill"> Zespoły</i>
-                        </NavLink>
-                    </Nav>
-                </Navbar>
+                <AdminNavbar />
             </div>
         </>
     );
