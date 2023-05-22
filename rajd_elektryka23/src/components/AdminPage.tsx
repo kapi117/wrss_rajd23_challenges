@@ -6,17 +6,9 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import firebaseConfig from "../config/firebaseConfig";
 import wrssEmails from "../config/wrssEmails";
-import {
-    Firestore,
-    addDoc,
-    collection,
-    getDocs,
-    getFirestore,
-} from "firebase/firestore";
-import ListOfChallenges from "./ListOfChallenges";
+import { Firestore, getFirestore } from "firebase/firestore";
 import { Challenge, Team } from "../config/types";
 import { Outlet, useLocation } from "react-router-dom";
-import { NavLink } from "react-router-dom";
 import AdminNavbar from "./AdminNavbar";
 
 interface AdminPageProps {

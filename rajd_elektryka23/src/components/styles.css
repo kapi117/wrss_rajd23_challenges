@@ -23,3 +23,13 @@
     text-decoration: none;
     background-color: lightgreen;
 }
+
+.fab-container {
+    position: fixed;
+    bottom: 4rem;
+    right: 1rem;
+}
+
+.fab-button {
+    border-radius: 50%;
+}
