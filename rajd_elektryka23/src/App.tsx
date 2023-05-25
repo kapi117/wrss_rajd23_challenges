@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import {
     getFirestore,
-    addDoc,
     collection,
     CollectionReference,
     DocumentData,
@@ -14,13 +12,9 @@ import {
     Firestore,
     getDocs,
 } from "firebase/firestore";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-import { faker } from "@faker-js/faker";
-import { Nav, Navbar, Table } from "react-bootstrap";
 import firebaseConfig from "./config/firebaseConfig";
 import ListOfChallenges from "./components/ListOfChallenges";
 import Ranking from "./components/Ranking";
-import { get } from "http";
 import { Challenge, Team } from "./config/types";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
@@ -28,11 +22,9 @@ import AdminPage from "./components/AdminPage";
 import AddTeamPage from "./components/AddTeamPage";
 import MarkTaskCompleted from "./components/MarkTaskCompleted";
 import HomeDescription from "./components/HomeDescription";
+import AdminDescription from "./components/AdminDescription";
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
 export function updateTeamInFirestore(team: Team) {
@@ -43,27 +35,10 @@ function App() {
     const app: FirebaseApp = initializeApp(firebaseConfig);
     const db: Firestore = getFirestore(app);
     let teamsRef: CollectionReference<DocumentData> = collection(db, "teams");
-    let metaRef: CollectionReference<DocumentData> = collection(db, "metadata");
-    let unsubscribe = onSnapshot(teamsRef, (querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            //console.log(`${doc.id} => ${doc.data().name}`);
-        });
-    });
 
     const [challenges, setChallenges] = useState<Challenge[]>([]);
     const [teams, setTeams] = useState<Team[]>([]);
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
-
-    const [newTeam, setNewTeam] = useState<Team>({
-        name: "",
-        points: 0,
-        completedChallengesIds: [],
-        completedChallengesPoints: [],
-        extraPoints: [],
-        members: [],
-        extraDescriptions: [],
-    });
-    const [addNewTeam, setAddNewTeam] = useState<boolean>(false);
 
     const getChallengesFromFirestore = useCallback(async () => {
         setChallenges([]);
@@ -91,11 +66,11 @@ function App() {
         console.log(count);
 
         setChallenges(temp_challenges);
-    }, []);
+    }, [db]);
 
     useEffect(() => {
         getChallengesFromFirestore();
-    }, []);
+    }, [getChallengesFromFirestore]);
 
     const unsubscribeTeams = onSnapshot(teamsRef, (querySnapshot) => {
         const temp_teams: Team[] = [];
@@ -147,6 +122,7 @@ function App() {
                             />
                         }
                     >
+                        <Route path="" element={<AdminDescription />} />
                         <Route
                             path="/admin/challenges"
                             element={

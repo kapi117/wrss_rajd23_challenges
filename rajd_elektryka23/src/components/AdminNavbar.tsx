@@ -3,9 +3,8 @@ import "./styles.css";
 import { Nav, Navbar } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
-import { Link } from "react-router-dom";
 
-const AdminNavbar = () => {
+const AdminNavbar: React.FC = () => {
     const location = useLocation();
 
     const fab_link =
@@ -18,21 +17,21 @@ const AdminNavbar = () => {
             <Navbar bg="dark" variant="dark" fixed="bottom" className="p-0">
                 <Nav className="justify-content-between container-fluid d-flex m-0 p-0">
                     <NavLink
-                        to="challenges"
-                        className={`d-flex justify-content-center w-50 py-3 nav-link-item`}
+                        to="/admin/challenges"
+                        className="d-flex justify-content-center w-50 py-3 nav-link-item"
                     >
                         <i className="bi bi-list-task"> Zadania</i>
                     </NavLink>
                     <NavLink
-                        to="teams"
-                        className={`d-flex justify-content-center w-50 py-3 nav-link-item`}
+                        to="/admin/teams"
+                        className="d-flex justify-content-center w-50 py-3 nav-link-item"
                     >
                         <i className="bi bi-people-fill"> Zespoły</i>
                     </NavLink>
                 </Nav>
             </Navbar>
             <div className="fab-container">
-                <Link
+                <NavLink
                     to={fab_link}
                     className="fab-button-link align-items-center d-flex justify-content-center w-100 h-100"
                 >
@@ -42,7 +41,7 @@ const AdminNavbar = () => {
                     >
                         <FiPlus />
                     </button>
-                </Link>
+                </NavLink>
             </div>
         </>
     );
