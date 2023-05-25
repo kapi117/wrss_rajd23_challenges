@@ -27,6 +27,7 @@ import Home from "./components/Home";
 import AdminPage from "./components/AdminPage";
 import AddTeamPage from "./components/AddTeamPage";
 import MarkTaskCompleted from "./components/MarkTaskCompleted";
+import HomeDescription from "./components/HomeDescription";
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
@@ -122,6 +123,8 @@ function App() {
                         path="/"
                         element={<Home challenges={challenges} teams={teams} />}
                     >
+                        <Route path="/" element={<HomeDescription />} />
+
                         <Route
                             path="/challenges"
                             element={

@@ -21,7 +21,13 @@
 .nav-link-item.active {
     color: darkred;
     text-decoration: none;
-    background-color: lightgreen;
+    background-color: lightgrey;
+}
+
+.nav-link-item:hover {
+    color: darkred;
+    text-decoration: none;
+    background-color: grey;
 }
 
 .fab-container {

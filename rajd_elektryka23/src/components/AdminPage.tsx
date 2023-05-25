@@ -8,7 +8,7 @@ import firebaseConfig from "../config/firebaseConfig";
 import wrssEmails from "../config/wrssEmails";
 import { Firestore, getFirestore } from "firebase/firestore";
 import { Challenge, Team } from "../config/types";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AdminNavbar from "./AdminNavbar";
 
 interface AdminPageProps {
@@ -31,6 +31,8 @@ const AdminPage: React.FC<AdminPageProps> = ({
     const [user, setUser] = useState<any>(null);
     const [isTeam, setIsTeam] = useState<boolean>(false);
 
+    const navigate = useNavigate();
+
     const auth = getAuth(app);
 
     auth.onAuthStateChanged((user) => {
@@ -38,6 +40,7 @@ const AdminPage: React.FC<AdminPageProps> = ({
             if (!wrssEmails.includes(user.email!)) {
                 alert("Nie masz uprawnień do tej strony!");
                 auth.signOut();
+                navigate("/");
                 return;
             }
             setUser(user);
