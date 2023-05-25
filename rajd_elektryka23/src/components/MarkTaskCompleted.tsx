@@ -88,13 +88,11 @@ const MarkTaskCompleted: React.FC<MarkTaskCompletedProps> = ({
                 <Form.Group controlId="challengeName">
                     <Form.Label>Nazwa challenge'u</Form.Label>
                     <Form.Control
-                        autoComplete="off"
-                        list="datalistOptions"
+                        as="select"
                         placeholder="Wpisz lub wyszukaj challenge"
                         value={challengeName}
                         onChange={handleChallengeChange}
-                    />
-                    <datalist id="datalistOptions">
+                    >
                         {challenges.map((challenge) => (
                             <option
                                 key={challenge.id}
@@ -103,7 +101,7 @@ const MarkTaskCompleted: React.FC<MarkTaskCompletedProps> = ({
                                 {challenge.description}
                             </option>
                         ))}
-                    </datalist>
+                    </Form.Control>
                 </Form.Group>
 
                 <Form.Group controlId="team">

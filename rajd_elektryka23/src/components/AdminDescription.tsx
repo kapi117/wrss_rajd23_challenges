@@ -18,7 +18,22 @@ const AdminDescription = () => {
                         Na stronie z zadaniami klikając przycisk <b> + </b> w
                         prawym dolnym rogu możecie zgłosić wykonanie zadania
                         przez drużynę. Wystarczy wybrać zadanie oraz drużynę i
-                        nacisnąć
+                        nacisnąć przycisk{" "}
+                        <a
+                            href="/admin/complete_challenge"
+                            className="btn btn-dark"
+                        >
+                            Zgłoś zadanie
+                        </a>
+                        <br /> <br />
+                        <h3>Dodawanie zespołu</h3>
+                        Na stronie z zespołami klikając przycisk <b> + </b> w
+                        prawym dolnym rogu możecie dodać nowy zespół. Wystarczy
+                        podać nazwę zespołu oraz wpisać członków zespołu. Po tym
+                        naciśnijcie przycisk{" "}
+                        <a href="/admin/add_team" className="btn btn-dark">
+                            Zapisz zespół
+                        </a>
                     </p>
                     <h2></h2>
                 </div>
