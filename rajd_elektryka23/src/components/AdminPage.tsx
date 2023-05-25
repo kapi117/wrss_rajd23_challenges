@@ -31,8 +31,6 @@ const AdminPage: React.FC<AdminPageProps> = ({
     const [user, setUser] = useState<any>(null);
     const [isTeam, setIsTeam] = useState<boolean>(false);
 
-    const navigate = useNavigate();
-
     const auth = getAuth(app);
 
     auth.onAuthStateChanged((user) => {
@@ -40,7 +38,6 @@ const AdminPage: React.FC<AdminPageProps> = ({
             if (!wrssEmails.includes(user.email!)) {
                 alert("Nie masz uprawnień do tej strony!");
                 auth.signOut();
-                navigate("/");
                 return;
             }
             setUser(user);
