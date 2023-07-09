@@ -2,7 +2,7 @@
 
 # ✨ Rajd Elektryka 2023 - challenges site
 
-This is a web app project for the Rajd Elektryka 2023. It's a site with challenges for the participants of the event. The site is written in React using TypeScript and Bootstrap. As a backend, it uses Firebase. It is accessible at [https://wrss-weaiiib-rajd23.web.app/](https://wrss-weaiiib-rajd23.web.app/).
+As a member of IT team at WRSS (Students' Council) I've developed a web app project for the Rajd Elektryka 2023. It's a site with challenges for the participants of the event. The site is written in React using TypeScript and Bootstrap. As a backend, it uses Firebase. It is accessible at [https://wrss-weaiiib-rajd23.web.app/](https://wrss-weaiiib-rajd23.web.app/).
 
 ## 📚 Main features
 
